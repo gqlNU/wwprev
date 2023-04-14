@@ -36,7 +36,7 @@ for (idraw in draws_ww) {
     idw <- idw + 1
     fitdata <- extract_from_alldata(imodel,fit_ts,horizon,idraw,alldata)
     output <- fit_nimble(imodel,iters,fitdata)
-    save_nimble_fit(imodel,output,save_dir,fitdata,iters)
+    save_nimble_fit(imodel,output,workdir,fitdata,iters)
     msg <- paste0('done ',idw,' out of ',ndraws_ww)
     my_print(msg)
 }

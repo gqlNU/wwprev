@@ -36,7 +36,7 @@ extract_from_alldata <- function(imodel,fit_ts,horizon,idraw,alldata) {
         out$ww_type <- 'using posterior mean'
     }
     #  add RW neighbourhood structure
-    if (imodel!=1) {
+    if (imodel==3) {
         out <- add_tmajd_to_fitdata(out,nts=out$ntot_times,RW.order=2)
     }
     return(out)
