@@ -21,9 +21,11 @@ if (!file.exists(alldata_file)) {
 
 imodel <- as.numeric(readline(prompt='imodel =  '))
 horizon <- as.numeric(readline(prompt='horizon = '))
-start_draw <- as.numeric(readline(prompt='start draw = '))
-end_draw <- as.numeric(readline(prompt='end draw = '))
-
+start_draw <- end_draw <- 1
+if (imodel!=1) {
+	start_draw <- as.numeric(readline(prompt='start draw = '))
+	end_draw <- as.numeric(readline(prompt='end draw = '))
+}
 
 fit_ts <- c(1,20)
 iters <- c(50000,10000,80)
