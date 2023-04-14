@@ -1,15 +1,12 @@
-#   source('/Volumes/WorkSpace/wwprev/summarising.R')
+###  source('/Volumes/WorkSpace/OnGitHub/wwprev/inst/scripts/summarising.R')
+
 
 rm(list=ls())
-workdir <- '/Volumes/WorkSpace/wwprev/'
+library(wwprev)  #  run install_wwprev.R to install this package
+
+workdir <- '/Volumes/WorkSpace/OnGitHub/wwprev/forTesting/results/nimble_keep/forecast/'
 setwd(workdir)
-
-devtools::document()
-devtools::load_all()
-
-workdir <- '/Volumes/WorkSpace/wwprev/forTesting/results/nimble_keep/forecast/'
-setwd(workdir)
-
+if (!dir.exists('forecast')) dir.create('forecast')
 
 imodels <- 3
 fit_ts <- c(1,20)

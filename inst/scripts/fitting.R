@@ -1,4 +1,4 @@
-###  source('/Volumes/WorkSpace/wwprev/fitting.R')
+###  source('/Volumes/WorkSpace/OnGitHub/wwprev/inst/scripts/fitting.R')
 
 
 rm(list=ls())

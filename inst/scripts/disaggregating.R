@@ -1,14 +1,13 @@
-#   source('/Volumes/WorkSpace/wwprev/disaggregating.R')
+###  source('/Volumes/WorkSpace/OnGitHub/wwprev/inst/scripts/disaggregating.R')
+
 
 rm(list=ls())
-workdir <- '/Volumes/WorkSpace/wwprev/'
-setwd(workdir)
+library(wwprev)  #  run install_wwprev.R to install this package
 
-devtools::document()
-devtools::load_all()
-
-workdir <- '/Volumes/WorkSpace/wwprev/forTesting/results/nimble_keep/'
+workdir <- '/Volumes/WorkSpace/OnGitHub/wwprev/forTesting/results/nimble_keep/'
 setwd(workdir)
+if (!dir.exists('params')) dir.create('params')
+
 
 ###  user inputs
 setting <- list()
@@ -18,7 +17,7 @@ setting$horizons <- 5
 setting$use_pmean <- FALSE
 setting$recollect <- TRUE
 
-alldata_file <- '../..//alldata.rds'
+alldata_file <- '../../alldata.rds'
 alldata <- get_all_ww_prev_data(save_file=NULL,load_file=alldata_file)
 
 for (horizon in  setting$horizons) {
