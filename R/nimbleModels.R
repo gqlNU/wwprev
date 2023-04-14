@@ -20,10 +20,8 @@ nimble_models <- function(imodel,fitdata) {
                 m[i,t] <- u[i] + b[t]
             }
             u[i] ~ dnorm(alpha,sd=sd_u)
-            gamma[i] ~ dnorm(a,sd=sd_gamma)
         }
         sd_u ~ dunif(0,10)
-        sd_gamma ~ dunif(0,10)
         sd_pv ~ dunif(0,10)
 
         #  model for the national data
@@ -33,7 +31,6 @@ nimble_models <- function(imodel,fitdata) {
             mu_P[t] <- alpha + b[t]
         }
         alpha ~ dflat()
-        a ~ dnorm(0,sd=1000)
         sd_P ~ dunif(0,10)
         #  overall trend
         b[1] <- 0
@@ -67,15 +64,10 @@ nimble_models <- function(imodel,fitdata) {
         for (t in 1:ntot_times) {
             P_mn[t] ~ dnorm(mu[t],sd=P_sd[t])
             mu[t] ~ dnorm(mu_P[t],sd=sd_P)
-            mu_P[t] <- alpha + b[t] + (mu_a)*(W[t]-8)
+            mu_P[t] <- alpha + b[t] + mu_a*(W[t]-8)
         }
         alpha ~ dflat()
         mu_a ~ dnorm(0,sd=1000)
-        #  RW2 as ICAR with sum2zero constraint
-        a[1:ntot_times] ~ dcar_normal(adj_tm_rw2[1:K_rw2],weights_tm_rw2[1:K_rw2],num_tm_rw2[1:ntot_times],
-                                      prec_a,zero_mean=1)
-        prec_a <- 1/(sd_a*sd_a)
-        sd_a ~ dunif(0,1)
         sd_P ~ dunif(0,10)
         #  overall trend
         b[1] <- 0
