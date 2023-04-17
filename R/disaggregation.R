@@ -70,14 +70,13 @@ get_nimble_MCMC_draws <- function(imodel,draw_file,return_type,save_sims_list=TR
     ###  a list of parameters to be extracted from the Nimble results
     all_params <- list(alpha=0,sd_pv=0,sd_P=0
                       ,mu_pv=c(nareas,ntimes)
-                      ,sd_b=0,b=ntot_times)
+                      ,sd_b=0,b=ntot_times
+                      ,sd_u=0,u=nareas)
     addp <- NULL
     if (imodel==2 | imodel==3) {
-        addp <- list(mu_a=0,sd_u=0,u=nareas)
+        addp <- list(mu_a=0,sd_gamma=0,gamma=nareas)
         if (imodel==3) {
-            addp <- c(addp,list(sd_gamma=0,gamma=nareas
-                               ,sd_b=0,b=ntot_times
-                               ,sd_a=0,a=ntot_times))
+            addp <- c(addp,list(sd_a=0,a=ntot_times))
         }
     }
     all_params <- c(all_params,addp)
