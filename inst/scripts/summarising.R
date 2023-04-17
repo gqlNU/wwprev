@@ -6,11 +6,10 @@ library(wwprev)  #  run install_wwprev.R to install this package
 
 workdir <- '/Volumes/WorkSpace/OnGitHub/wwprev/forTesting/results/nimble_keep/forecast/'
 setwd(workdir)
-if (!dir.exists('forecast')) dir.create('forecast')
 
-imodels <- 3
+imodels <- 2
 fit_ts <- c(1,20)
-horizon <- 5
+horizon <- 20
 ndraws <- 50
 use_pmean <- FALSE
 

@@ -7,11 +7,11 @@ library(wwprev)  #  run install_wwprev.R to install this package
 workdir <- '/Volumes/WorkSpace/OnGitHub/wwprev/forTesting/results/nimble_keep/'
 setwd(workdir)
 if (!dir.exists('params')) dir.create('params')
-
+if (!dir.exists('forecast')) dir.create('forecast')
 
 ###  user inputs
 setting <- list()
-setting$imodel <- 3
+setting$imodel <- 2
 setting$fit_ts <- c(1,20)
 setting$horizons <- 5
 setting$use_pmean <- FALSE
