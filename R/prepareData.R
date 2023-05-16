@@ -467,8 +467,8 @@ add_ethnicity <- function(dat) {
 	bame <- data.frame(bame=(n-nw)/n*100,LAD21CD=d[['Area code']],LAD21NM=d[['Area name']])
 	###  select and reorder the LTLAs
 	ids <- sapply(rownames(dat$w),function(x){which(bame$LAD21CD==x)})
-	dat$bame <- bame$bame
-	dat$std_bame <- scale(bame$bame)
+	dat$bame <- bame$bame[ids]
+	dat$std_bame <- scale(bame$bame[ids])[,1]
 	return(dat)
 }
 
@@ -505,6 +505,6 @@ add_IMD <- function(dat) {
 		}
 	}
 	dat$imd <- imd
-	dat$std_imd <- scale(imd)
+	dat$std_imd <- (scale(imd))[,1]
 	return(dat)
 }
