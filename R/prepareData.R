@@ -474,8 +474,7 @@ add_ethnicity <- function(dat) {
 
 
 
-#' add IMD (boundary change https://www.gov.uk/government/statistics/2011-rural-urban-classification-lookup-tables-for-all-geographies: Rural Urban Classification 2011 lookup tables for local authority areas
-)
+#' add IMD (boundary change https://www.gov.uk/government/statistics/2011-rural-urban-classification-lookup-tables-for-all-geographies: Rural Urban Classification 2011 lookup tables for local authority areas)
 #'
 #'
 #'
