@@ -232,7 +232,7 @@ get_final_data <- function(imodel,fitdata) {
 	    	const <- c(const,'K_sp','adj_sp','num_sp','weights_sp')
     }
     if (imodel==5) {
-    		const <- c(const,'std_imd','std_log_bame','nregions')
+    		const <- c(const,'std_imd','std_log_bame','nregions','region')
     }
     ids <- sapply(const,function(x){which(names(fitdata)==x)})
     constants <- fitdata[c(ids)]
