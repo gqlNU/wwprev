@@ -160,7 +160,48 @@ nimble_models <- function(imodel,fitdata) {
         }
         sd_b ~ dunif(0,10)
     })
-    
+
+######################################################################
+#   Model 2 + (ltla-level IMD and BAME% on prevalence)
+######################################################################
+    im <- 5
+    code[[im]] <- nimbleCode({
+        #  model for the LTLA data
+        for (i in 1:nareas) {
+            for (t in 1:ntimes) {
+                p_mn[i,t] ~ dnorm(mu_pv[i,t],sd=p_sd[i,t]) # dealing with estimate uncertainty
+                mu_pv[i,t] ~ dnorm(m[i,t],sd=sd_pv)  #  Type I space-time interaction
+                m[i,t] <- u[i] + b[t] + (gamma[i]+mu_a)*(w[i,t]-8) + 
+                          beta.bame*bame[i] + beta.imd*imd[i]
+            }
+            u[i] ~ dnorm(alpha,sd=sd_u)
+            gamma[i] ~ dnorm(0,sd=sd_gamma)
+        }
+        sd_u ~ dunif(0,10)
+        sd_gamma ~ dunif(0,10)
+        sd_pv ~ dunif(0,10)
+        
+        beta.imd ~ dnorm(0,0.0001)
+        beta.bame ~ dnorm(0,0.0001)
+
+        #  model for the national data
+        for (t in 1:ntot_times) {
+            P_mn[t] ~ dnorm(mu[t],sd=P_sd[t])
+            mu[t] ~ dnorm(mu_P[t],sd=sd_P)
+            mu_P[t] <- alpha + b[t] + mu_a*(W[t]-8)
+        }
+        alpha ~ dflat()
+        mu_a ~ dnorm(0,sd=1000)
+        sd_P ~ dunif(0,10)
+        #  overall trend
+        b[1] <- 0
+        for (t in 2:ntot_times) {
+            b[t] ~ dnorm(b[t-1],sd=sd_b)
+        }
+        sd_b ~ dunif(0,10)
+    })
+
+
     ###  specification of the chosen model
     spec <- list(code=code[[imodel]])
     ###  get initial values and parameters from the corresponding model
@@ -185,6 +226,7 @@ get_final_data <- function(imodel,fitdata) {
     if (imodel==4) {
 	    	const <- c(const,'K_sp','adj_sp','num_sp','weights_sp')
     }
+    
     ids <- sapply(const,function(x){which(names(fitdata)==x)})
     constants <- fitdata[c(ids)]
     fitdata <- fitdata[-c(ids)]
@@ -226,7 +268,7 @@ get_inits_and_params <- function(imodel,fitdata) {
                   ,sd_u=0.2
                    )
     inits1add <- inits2add <- NULL
-    if (imodel==2 | imodel==3 | imodel==4) {
+    if (imodel==2 | imodel==3 | imodel==4 | imodel==5) {
         inits1add <- list(mu_a=0.1
                          ,gamma=rep(0.1,fitdata$nareas)
                          ,sd_gamma=0.2)
@@ -243,7 +285,13 @@ get_inits_and_params <- function(imodel,fitdata) {
         		inits1add$s <- rep(0.1,fitdata$nareas)
         		inits1add$sd_s <- 0.1
         		inits2add$s <- rep(0.2,fitdata$nareas)
-        	inits2add$sd_s <- 0.2
+        		inits2add$sd_s <- 0.2
+        }
+        if (imodel==5) {
+        		inits1add$beta.imd <- 0.1
+        	inits1add$beta.bame <- 0.1
+        	inits2add$beta.imd <- -0.1
+        	inits2add$beta.bame <- -0.1
         }
     }
     inits1 <- c(inits1,inits1add)

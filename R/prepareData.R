@@ -440,3 +440,16 @@ add_spajd_to_fitdata <- function(dat) {
 	dat$K_sp <- length(spadj$adj)
 	return(dat)
 }
+
+
+#' format ethnicity data
+#'
+#'
+#'
+#' @param
+#' @return
+#' @export
+format_ethnicity_data <- function(dat) {
+	data_file <- system.file("extdata", "ethnic2021.xlsx", package = "wwprev")
+	d <- readxl::read_excel(data_file,sheet='Figure 3',skip=4)
+}
