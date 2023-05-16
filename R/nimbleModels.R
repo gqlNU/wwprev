@@ -239,7 +239,7 @@ get_final_data <- function(imodel,fitdata) {
     fitdata <- fitdata[-c(ids)]
     ###  remove items that are not used in the model
     not_use <- c('ww_type','fit_ts','idraw','horizon')
-    if (imodel==5) not_use <- c(not_use,'imd','bame','std_bame')
+    if (imodel==5) not_use <- c(not_use,'imd','bame','std_bame','rgn_nm','rgn_cd')
     ids <- sapply(not_use,function(x){which(names(fitdata)==x)})
     fitdata <- fitdata[-c(ids)]
     out <- list(fitdata=fitdata,constants=constants)
