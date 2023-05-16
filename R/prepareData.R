@@ -44,6 +44,11 @@ extract_from_alldata <- function(imodel,fit_ts,horizon,idraw,alldata) {
     if (imodel==4) {
         out <- add_spajd_to_fitdata(out)
     }
+    #  add IMD and BAME
+    if (imodel==5) {
+        out <- add_IMD(out)
+        out <- add_ethnicity(out)
+    }
     return(out)
 }
 
@@ -442,14 +447,65 @@ add_spajd_to_fitdata <- function(dat) {
 }
 
 
-#' format ethnicity data
+#' add ethnicity
 #'
 #'
 #'
 #' @param
 #' @return
 #' @export
-format_ethnicity_data <- function(dat) {
+add_ethnicity <- function(dat) {
 	data_file <- system.file("extdata", "ethnic2021.xlsx", package = "wwprev")
-	d <- readxl::read_excel(data_file,sheet='Figure 3',skip=4)
+	d <- as.data.frame(readxl::read_excel(data_file,sheet='Figure 3',skip=4))
+	###  get the number columns
+	all <- d[,grep('number',colnames(d))]
+	n <- apply(all,1,sum)
+	###  get the white columns
+	white <- all[,grep('White:',colnames(all))]
+	nw <- apply(white,1,sum)
+	###  non-white percentage
+	bame <- data.frame(bame=(n-nw)/n*100,LAD21CD=d[['Area code']],LAD21NM=d[['Area name']])
+	###  select and reorder the LTLAs
+	ids <- sapply(rownames(dat$w),function(x){which(bame$LAD21CD==x)})
+	dat$bame <- bame$bame
+	dat$std_bame <- scale(bame$bame)
+	return(dat)
+}
+
+
+
+#' add IMD (boundary change https://www.gov.uk/government/statistics/2011-rural-urban-classification-lookup-tables-for-all-geographies: Rural Urban Classification 2011 lookup tables for local authority areas
+)
+#'
+#'
+#'
+#' @param
+#' @return
+#' @export
+add_IMD <- function(dat) {
+	data_file <- system.file("extdata", "File_10_-_IoD2019_Local_Authority_District_Summaries__lower-tier__.xlsx", package = "wwprev")
+	d <- as.data.frame(readxl::read_excel(data_file,sheet='IMD'))
+	score <- d[['IMD - Average score']]
+	
+	new_northampton <- c('E06000060','E06000061','E06000062') # boundary change from 2019 to 2021
+	###  select and reorder the LTLAs
+	imd <- NULL
+	lad21cd <- rownames(dat$w)
+	n <- length(lad21cd)
+	for (ilad in 1:n) {
+		lad <- lad21cd[ilad]
+		if (!any(new_northampton==lad)) {
+			ii <- which(d['Local Authority District code (2019)']==lad)
+			imd <- c(imd,score[ii])
+		} else {
+			if (lad=='E06000060') x <- c('E07000004','E07000005','E07000006','E07000007')
+			if (lad=='E06000061') x <- c('E07000150','E07000152','E07000153','E07000156')
+			if (lad=='E06000062') x <- c('E07000151','E07000154','E07000155')
+			ii <- sapply(x,function(xx){which(d['Local Authority District code (2019)']==xx)})
+			imd <- c(imd,mean(score[ii]))
+		}
+	}
+	dat$imd <- imd
+	dat$std_imd <- scale(imd)
+	return(dat)
 }

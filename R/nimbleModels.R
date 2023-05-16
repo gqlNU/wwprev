@@ -172,7 +172,7 @@ nimble_models <- function(imodel,fitdata) {
                 p_mn[i,t] ~ dnorm(mu_pv[i,t],sd=p_sd[i,t]) # dealing with estimate uncertainty
                 mu_pv[i,t] ~ dnorm(m[i,t],sd=sd_pv)  #  Type I space-time interaction
                 m[i,t] <- u[i] + b[t] + (gamma[i]+mu_a)*(w[i,t]-8) + 
-                          beta.bame*bame[i] + beta.imd*imd[i]
+                          beta.bame*std_bame[i] + beta.imd*std_imd[i]
             }
             u[i] ~ dnorm(alpha,sd=sd_u)
             gamma[i] ~ dnorm(0,sd=sd_gamma)
@@ -226,12 +226,15 @@ get_final_data <- function(imodel,fitdata) {
     if (imodel==4) {
 	    	const <- c(const,'K_sp','adj_sp','num_sp','weights_sp')
     }
-    
+    if (imodel==5) {
+    		const <- c(const,'std_imd','std_bame')
+    }
     ids <- sapply(const,function(x){which(names(fitdata)==x)})
     constants <- fitdata[c(ids)]
     fitdata <- fitdata[-c(ids)]
     ###  remove items that are not used in the model
     not_use <- c('ww_type','fit_ts','idraw','horizon')
+    if (imodel==5) not_use <- c(not_use,'imd','bame')
     ids <- sapply(not_use,function(x){which(names(fitdata)==x)})
     fitdata <- fitdata[-c(ids)]
     out <- list(fitdata=fitdata,constants=constants)
