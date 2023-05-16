@@ -20,10 +20,14 @@ disaggregate <- function(sims_list_file,imodel,alldata) {
     eps <- sims_noise(sims.list$sd_pv)
     for (i in 1:nareas) {
         for (t in (ntimes+1):ntot_times) {
+            if (imodel==5) {
+                f <- sims.list$u[,i,] + sims.list$b[,t,] + (sims.list$gamma[,i,]+sims.list$mu_a)*w[i,t] + 
+                     sims.list$beta.imd * fitdata$std_imd[i] + sims.list$beta.bame * fitdata$std_log_bame[i]
+            }
             if (imodel==3) {
                 f <- sims.list$u[,i,] + sims.list$b[,t,] + (sims.list$gamma[,i,]+sims.list$mu_a+sims.list$a[,t,])*w[i,t]
             }
-            if (imodel==2) {
+            if (imodel==2 | imodel==4) {
                 f <- sims.list$u[,i,] + sims.list$b[,t,] + (sims.list$gamma[,i,]+sims.list$mu_a)*w[i,t]
             }
             if (imodel==1) {
