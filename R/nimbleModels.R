@@ -172,17 +172,22 @@ nimble_models <- function(imodel,fitdata) {
                 p_mn[i,t] ~ dnorm(mu_pv[i,t],sd=p_sd[i,t]) # dealing with estimate uncertainty
                 mu_pv[i,t] ~ dnorm(m[i,t],sd=sd_pv)  #  Type I space-time interaction
                 m[i,t] <- u[i] + b[t] + (gamma[i]+mu_a)*(w[i,t]-8) + 
-                          beta.bame*std_log_bame[i] + beta.imd*std_imd[i]
+                          beta.bame*std_log_bame[i] + beta.imd*std_imd[i] +
+                          kappa[region[i]]
             }
             u[i] ~ dnorm(alpha,sd=sd_u)
             gamma[i] ~ dnorm(0,sd=sd_gamma)
         }
+        for (ir in 1:nregions) {
+        		kappa[ir] ~ dnorm(0,sd=sd_kappa)
+        }
+        sd_kappa ~ dunif(0,10)
         sd_u ~ dunif(0,10)
         sd_gamma ~ dunif(0,10)
         sd_pv ~ dunif(0,10)
         
-        beta.imd ~ dnorm(0,0.0001)
-        beta.bame ~ dnorm(0,0.0001)
+        beta.imd ~ dnorm(0,sd=1000)
+        beta.bame ~ dnorm(0,sd=1000)
 
         #  model for the national data
         for (t in 1:ntot_times) {
@@ -227,7 +232,7 @@ get_final_data <- function(imodel,fitdata) {
 	    	const <- c(const,'K_sp','adj_sp','num_sp','weights_sp')
     }
     if (imodel==5) {
-    		const <- c(const,'std_imd','std_log_bame')
+    		const <- c(const,'std_imd','std_log_bame','nregions')
     }
     ids <- sapply(const,function(x){which(names(fitdata)==x)})
     constants <- fitdata[c(ids)]
@@ -292,9 +297,13 @@ get_inits_and_params <- function(imodel,fitdata) {
         }
         if (imodel==5) {
         		inits1add$beta.imd <- 0.1
-        	inits1add$beta.bame <- 0.1
-        	inits2add$beta.imd <- -0.1
-        	inits2add$beta.bame <- -0.1
+        		inits1add$beta.bame <- 0.1
+        		inits1add$kappa <- rep(0.1,fitdata$nregions)
+        	inits1add$sd_kappa <- 0.1
+        		inits2add$beta.imd <- -0.1
+        		inits2add$beta.bame <- -0.1
+        		inits2add$kappa <- rep(-0.1,fitdata$nregions)
+        	inits2add$sd_kappa <- 0.5
         }
     }
     inits1 <- c(inits1,inits1add)
