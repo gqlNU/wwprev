@@ -73,10 +73,16 @@ get_nimble_MCMC_draws <- function(imodel,draw_file,return_type,save_sims_list=TR
                       ,sd_b=0,b=ntot_times
                       ,sd_u=0,u=nareas)
     addp <- NULL
-    if (imodel==2 | imodel==3) {
+    if (imodel==2 | imodel==3 | imodel==4 | imodel==5) {
         addp <- list(mu_a=0,sd_gamma=0,gamma=nareas)
         if (imodel==3) {
             addp <- c(addp,list(sd_a=0,a=ntot_times))
+        }
+        if (imodel==4) {
+	        addp <- c(addp,list(sd_s=0,s=nareas))
+        }
+        if (imodel==5) {
+	        addp <- c(addp,list(beta.imd=0,beta.bame=0))
         }
     }
     all_params <- c(all_params,addp)

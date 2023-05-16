@@ -469,6 +469,7 @@ add_ethnicity <- function(dat) {
 	ids <- sapply(rownames(dat$w),function(x){which(bame$LAD21CD==x)})
 	dat$bame <- bame$bame[ids]
 	dat$std_bame <- scale(bame$bame[ids])[,1]
+	dat$std_log_bame <- scale(log(bame$bame[ids]))[,1]
 	return(dat)
 }
 
