@@ -541,3 +541,82 @@ add_region <- function(dat) {
 	dat$nregions <- length(unique(rgn_nm))
 	return(dat)
 }
+
+
+
+
+#' add LTLA-daily vaccine data
+#'
+#'
+#'
+#' @param
+#' @return
+#' @export
+get_weekly_LTLA_vax <- function(dat,ddir='/Volumes/WorkSpace/onGitHub/wwprev/forTesting/vax/') {
+	lad21cd <- rownames(dat$w)
+	for (ilad in 1:length(lad21cd)) {
+		lad <- x <- lad21cd[ilad]
+		if (lad=='E06000060') x <- c('E07000004','E07000005','E07000006','E07000007')
+		if (lad=='E06000061') x <- c('E07000150','E07000152','E07000153','E07000156')
+		if (lad=='E06000062') x <- c('E07000151','E07000154','E07000155')
+		out <- sapply(x,function(xx) {
+			f <- paste0('https://api.coronavirus.data.gov.uk/v2/data?areaType=ltla&areaCode=',xx,'&metric=cumPeopleVaccinatedSecondDoseByVaccinationDate&metric=cumPeopleVaccinatedFirstDoseByVaccinationDate&format=csv')
+			d <- paste0(ddir,xx,'.csv')
+			if (!file.exists(d)) download.file(f,destfile=d)
+		})
+	}
+
+	vax <- NULL
+	for (ilad in 1:length(lad21cd)) {
+		if (ilad==1) {
+			#  Monday of each week apart from June-01-2021 which is a Tuesday
+			weeks <- names(dat$P_mn)
+			wk_ids <- as.list(1:length(weeks))
+			for (iw in 1:length(weeks)) {
+				wk <- weeks[iw]
+				ii <- which(tmp$date==wk)
+				if (wk=='2021-06-01') {
+					wk_ids[[iw]] <- ii:(ii-5)
+				} else {
+					wk_ids[[iw]] <- ii:(ii-6)
+				}
+				names(wk_ids[[iw]]) <- tmp$date[wk_ids[[iw]]]
+			}
+		}
+
+		lad <- x <- lad21cd[ilad]
+		if (lad=='E06000060') x <- c('E07000004','E07000005','E07000006','E07000007')
+		if (lad=='E06000061') x <- c('E07000150','E07000152','E07000153','E07000156')
+		if (lad=='E06000062') x <- c('E07000151','E07000154','E07000155')
+		tm <- as.list(1:length(weeks))
+		ic <- 0
+		for (xx in x) {
+			ic <- ic + 1
+			f <- paste0(ddir,xx,'.csv')	
+			tmp <- read.csv(f,header=TRUE)
+			for (iw in 1:length(weeks)) {
+				tmm <- tmp$cumPeopleVaccinatedSecondDoseByVaccinationDate[wk_ids[[iw]]]
+				if (ic==1) tm[[iw]] <- tmm
+				if (ic>1) tm[[iw]] <- rbind(tm[[iw]],tmm)
+			}
+		}
+		if (length(x)>1) tm <- lapply(tm,function(g){apply(g,2,sum)})
+		atm <- unlist(lapply(tm,mean))
+		vax <- rbind(vax,atm)
+#		if (ilad%%10==0) print(ilad)
+	}
+	colnames(vax) <- weeks
+	rownames(vax) <- lad21cd
+	
+	data_file <- system.file("extdata", "ukpopestimatesmid2021on2021geographyfinal.xls", package = "wwprev")
+	d <- as.data.frame(readxl::read_excel(data_file,sheet='MYE2 - Persons',skip=7))[c('Code','All ages')]
+	
+	p_vax <- vax
+	for (i in 1:nrow(vax)) {
+		lad <- rownames(vax)[i]
+		pop <- d[['All ages']][which(d$Code==lad)]
+		p_vax[i,] <- vax[i,]/pop
+	}
+	dat$pvax <- p_vax
+	return(dat)
+}
