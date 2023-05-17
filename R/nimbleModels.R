@@ -6,7 +6,7 @@
 #' @return
 #' @export
 nimble_models <- function(imodel,fitdata) {
-    code <- as.list(1:4)
+    code <- as.list(1:10)
 ######################################################################
 #   this is im=8 in nimble_models_1to13.R
 ######################################################################
@@ -162,7 +162,7 @@ nimble_models <- function(imodel,fitdata) {
     })
 
 ######################################################################
-#   Model 2 + (ltla-level IMD and BAME% on prevalence)
+#   Model 2 + (ltla-level IMD on prevalence)
 ######################################################################
     im <- 5
     code[[im]] <- nimbleCode({
@@ -172,22 +172,16 @@ nimble_models <- function(imodel,fitdata) {
                 p_mn[i,t] ~ dnorm(mu_pv[i,t],sd=p_sd[i,t]) # dealing with estimate uncertainty
                 mu_pv[i,t] ~ dnorm(m[i,t],sd=sd_pv)  #  Type I space-time interaction
                 m[i,t] <- u[i] + b[t] + (gamma[i]+mu_a)*(w[i,t]-8) + 
-                          beta.bame*std_log_bame[i] + beta.imd*std_imd[i] +
-                          kappa[region[i]]
+                          beta.imd*std_imd[i]
             }
             u[i] ~ dnorm(alpha,sd=sd_u)
             gamma[i] ~ dnorm(0,sd=sd_gamma)
         }
-        for (ir in 1:nregions) {
-        		kappa[ir] ~ dnorm(0,sd=sd_kappa)
-        }
-        sd_kappa ~ dunif(0,10)
         sd_u ~ dunif(0,10)
         sd_gamma ~ dunif(0,10)
         sd_pv ~ dunif(0,10)
         
         beta.imd ~ dnorm(0,sd=1000)
-        beta.bame ~ dnorm(0,sd=1000)
 
         #  model for the national data
         for (t in 1:ntot_times) {
@@ -232,14 +226,14 @@ get_final_data <- function(imodel,fitdata) {
 	    	const <- c(const,'K_sp','adj_sp','num_sp','weights_sp')
     }
     if (imodel==5) {
-    		const <- c(const,'std_imd','std_log_bame','nregions','region')
+    		const <- c(const,'std_imd')#,'std_log_bame','nregions','region')
     }
     ids <- sapply(const,function(x){which(names(fitdata)==x)})
     constants <- fitdata[c(ids)]
     fitdata <- fitdata[-c(ids)]
     ###  remove items that are not used in the model
     not_use <- c('ww_type','fit_ts','idraw','horizon')
-    if (imodel==5) not_use <- c(not_use,'imd','bame','std_bame','rgn_nm','rgn_cd')
+    if (imodel==5) not_use <- c(not_use,'imd')#,'bame','std_bame','rgn_nm','rgn_cd')
     ids <- sapply(not_use,function(x){which(names(fitdata)==x)})
     fitdata <- fitdata[-c(ids)]
     out <- list(fitdata=fitdata,constants=constants)
@@ -296,14 +290,8 @@ get_inits_and_params <- function(imodel,fitdata) {
         		inits2add$sd_s <- 0.2
         }
         if (imodel==5) {
-        		inits1add$beta.imd <- 0.1
-        		inits1add$beta.bame <- 0.1
-        		inits1add$kappa <- rep(0.1,fitdata$nregions)
-        	inits1add$sd_kappa <- 0.1
-        		inits2add$beta.imd <- -0.1
-        		inits2add$beta.bame <- -0.1
-        		inits2add$kappa <- rep(-0.1,fitdata$nregions)
-        	inits2add$sd_kappa <- 0.5
+        	inits1add$beta.imd <- 0.1
+        	inits2add$beta.imd <- -0.1
         }
     }
     inits1 <- c(inits1,inits1add)

@@ -22,7 +22,7 @@ disaggregate <- function(sims_list_file,imodel,alldata) {
         for (t in (ntimes+1):ntot_times) {
             if (imodel==5) {
                 f <- sims.list$u[,i,] + sims.list$b[,t,] + (sims.list$gamma[,i,]+sims.list$mu_a)*w[i,t] + 
-                     sims.list$beta.imd * fitdata$std_imd[i] + sims.list$beta.bame * fitdata$std_log_bame[i]
+                     sims.list$beta.imd * fitdata$std_imd[i]
             }
             if (imodel==3) {
                 f <- sims.list$u[,i,] + sims.list$b[,t,] + (sims.list$gamma[,i,]+sims.list$mu_a+sims.list$a[,t,])*w[i,t]
@@ -86,7 +86,7 @@ get_nimble_MCMC_draws <- function(imodel,draw_file,return_type,save_sims_list=TR
 	        addp <- c(addp,list(sd_s=0,s=nareas))
         }
         if (imodel==5) {
-	        addp <- c(addp,list(beta.imd=0,beta.bame=0))
+	        addp <- c(addp,list(beta.imd=0))
         }
     }
     all_params <- c(all_params,addp)

@@ -47,8 +47,8 @@ extract_from_alldata <- function(imodel,fit_ts,horizon,idraw,alldata) {
     #  add IMD and BAME
     if (imodel==5) {
         out <- add_IMD(out)
-        out <- add_ethnicity(out)
-        out <- add_region(out)
+#        out <- add_ethnicity(out)
+#        out <- add_region(out)
     }
     return(out)
 }
