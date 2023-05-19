@@ -6,7 +6,7 @@
 #' @param
 #' @return
 #' @export
-extract_from_alldata <- function(imodel,fit_ts,horizon,idraw,alldata) {
+extract_from_alldata <- function(imodel,fit_ts,horizon,idraw,alldata,covars=NULL) {
     t_ids_short <- fit_ts[1]:fit_ts[2]     #  the length of time over which ltla prevalence is available
     t_ids <- fit_ts[1]:(fit_ts[2]+horizon) #  the entire set of time points
     out <- list(ntot_times=length(t_ids),nareas=dim(alldata$w_sims)[2])
@@ -47,9 +47,11 @@ extract_from_alldata <- function(imodel,fit_ts,horizon,idraw,alldata) {
     #  add IMD and BAME
     if (imodel==5) {
         out <- add_IMD(out)
-#        out <- add_ethnicity(out)
-#        out <- add_region(out)
     }
+    if (any(covars)=='IMD') out <- add_IMD(out)
+    if (any(covars)=='ethnicity') out <- add_ethnicity(out)
+    if (any(covars)=='region') out <- add_region(out)
+    
     return(out)
 }
 
@@ -569,6 +571,9 @@ get_weekly_LTLA_vax <- function(dat,ddir='/Volumes/WorkSpace/onGitHub/wwprev/for
 	vax <- NULL
 	for (ilad in 1:length(lad21cd)) {
 		if (ilad==1) {
+			f <- paste0(ddir,lad21cd[ilad],'.csv')	
+			tmp <- read.csv(f,header=TRUE)
+			
 			#  Monday of each week apart from June-01-2021 which is a Tuesday
 			weeks <- names(dat$P_mn)
 			wk_ids <- as.list(1:length(weeks))
