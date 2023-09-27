@@ -555,7 +555,11 @@ add_IMD <- function(dat) {
 add_region <- function(dat) {
 	data_file <- system.file("extdata", "20220223_WW_Population_Deprivation_coverage.xlsx", package = "wwprev")
 	d <- as.data.frame(readxl::read_excel(data_file,sheet='LTLA_coverage',skip=5))
-	lad21cd <- rownames(dat$w_mn)
+	if (!is.null(dat$w_mn)) {
+		lad21cd <- rownames(dat$w_mn)
+	} else {
+		lad21cd <- rownames(dat$w)
+	}
 	rgn_cd <- rgn_nm <- rep('',length(lad21cd))
 	for (i in 1:length(lad21cd)) {
 		lad <- lad21cd[i]
