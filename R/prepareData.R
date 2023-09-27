@@ -459,7 +459,7 @@ tm_adjacency <- function(T,RW.order) {
 #' @return
 #' @export
 add_spajd_to_fitdata <- function(dat) {
-	data_file <- system.file("extdata", "Local_Authority_Districts_December_2021_GB_BUC_2022_7123482767279458595/LAD_DEC_2021_GB_BUC.shp", package = "wwprev")
+	data_file <- system.file("extdata", "Local_Authority_Districts_(May_2021)_UK_BFE_V3/LAD_MAY_2021_UK_BFE_V2.shp", package = "wwprev")
 	ltla <- sf::st_read(data_file)
 	ltla_cd <- rownames(dat$w)
 	ids <- sapply(ltla_cd,function(x){which(ltla$LAD21CD==x)})
