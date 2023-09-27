@@ -22,7 +22,7 @@ You also need to install the `R` package `publicWW` [] using the following code:
 devtools::install_github("gqlNU/publicWW", auth_token = PAT) # the same PAT used above
 ```
 
-
+<!--
 ##  Data sources
 - Weekly-LTLA level prevalence estimates from Nicholson et al. 2022
 - English Indices of Multiple Deprivation 2019: [https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019]
@@ -30,3 +30,4 @@ devtools::install_github("gqlNU/publicWW", auth_token = PAT) # the same PAT used
 
 - English Indices of Multiple Deprivation 2019: [https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019]
 - Ethnicity based on the 2021 Census: [https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/bulletins/ethnicgroupenglandandwales/census2021#how-ethnic-composition-varied-across-england-and-wales]
+-->
