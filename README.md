@@ -8,7 +8,7 @@ A statistical framework to nowcast prevalence of COVID-19 at a fine spatio-tempo
 ##  Data sources
 - Weekly-LTLA level prevalence estimates from Nicholson et al. 2022
 - English Indices of Multiple Deprivation 2019: [https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019]
-- Ethnicity based on the 2021 Census: [https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/bulletins/ethnicgroupenglandandwales/census2021#how-ethnic-composition-varied-across-england-and-wales]
+- Ethnicity based on the 2021 Census: (the data)[https://www.ons.gov.uk/visualisations/dvc2203/map/datadownload.xlsx] used for Figure 3 shown in (this report)[https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/bulletins/ethnicgroupenglandandwales/census2021] 
 
 - English Indices of Multiple Deprivation 2019: [https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019]
 - Ethnicity based on the 2021 Census: [https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/bulletins/ethnicgroupenglandandwales/census2021#how-ethnic-composition-varied-across-england-and-wales]
