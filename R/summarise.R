@@ -8,7 +8,6 @@
 RMSE <- function(x) {
     o <- sqrt(mean(c(x)^2))
     return(o)
-#' mean bias
 }
 
 #' mean bias
