@@ -22,6 +22,21 @@ You also need to install the `R` package `publicWW` [] using the following code:
 devtools::install_github("gqlNU/publicWW", auth_token = PAT) # the same PAT used above
 ```
 
+
+##  Steps in obtaining the nowcast prevalence at fine spatial scale
+
+### 1. Model fitting.
+This script [inst/scripts/fitting.R](inst/scripts/fitting.R) fits a model from the data integration framework to the weekly prevalence estimates and the weekly wastewater viral concentration estimates. The default setting simulates the scenario where the two sets of estimates are available at both the Lower Tier Local Authority (LTLA) level and the national level for the first 20 weeks and the weekly prevalence estimates are only available at the national level for the subsequent 20 weeks. The aim of the data integration framework is to disaggregate the national level prevalence to the LTLA level for the latter 20 weeks, i.e. the nowcast period.
+
+### 2. Disaggregation
+Taking the output from Step 1, the script [inst/scripts/disaggregating.R](inst/scripts/disaggregating.R) produces the nowcast prevalence at the LTLA level.
+
+### 3. Summary of nowcast
+The script [inst/scripts/summarising.R](inst/scripts/summarising.R) assesses the quality of the nowcast prevalence against the observed but held-out LTLA prevalence.
+
+
+
+
 <!--
 ##  Data sources
 - Weekly-LTLA level prevalence estimates from Nicholson et al. 2022
