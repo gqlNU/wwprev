@@ -43,7 +43,11 @@ The script [inst/scripts/summarising.R](inst/scripts/summarising.R) assesses the
 
 
 ##  Data sources used in the study
-- Weekly-LTLA level debiased prevalence estimates from [https://www.nature.com/articles/s41564-021-01029-0](Nicholson et al. 2022) (included in the `wwprev` package)
-- Weekly-LTLA and weekly-national estimates of wastewater viral concentration from [https://www.sciencedirect.com/science/article/pii/S0160412023000387](Li et al. (2023)) (included in the `wwprev` package)
-- [https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019](English Indices of Multiple Deprivation 2019)
-- Ethnicity based on the 2021 Census: [https://www.ons.gov.uk/visualisations/dvc2203/map/datadownload.xlsx](the data) used for Figure 3 shown in [https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/bulletins/ethnicgroupenglandandwales/census2021](this report)
+- Weekly-LTLA level debiased prevalence estimates from Nicholson et al. 2022 [https://www.nature.com/articles/s41564-021-01029-0] (included in the `wwprev` package)
+- Weekly-LTLA and weekly-national estimates of wastewater viral concentration from Li et al. (2023) [https://www.sciencedirect.com/science/article/pii/S0160412023000387] (included in the `wwprev` package)
+- English Indices of Multiple Deprivation 2019: [https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019]
+- Ethnicity based on the 2021 Census: [https://www.ons.gov.uk/visualisations/dvc2203/map/datadownload.xlsx]
+
+<!--
+(the data) used for Figure 3 shown in [https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/bulletins/ethnicgroupenglandandwales/census2021](this report)
+-->
