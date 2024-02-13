@@ -4,7 +4,7 @@
 \alias{add_legend}
 \title{Add a legend to the correlation plot}
 \usage{
-add_legend(x, y, d, cols, txt, dt, cex)
+add_legend(x, y, d, cols, txt, dt, cex = 2)
 }
 \description{
 Add a legend to the correlation plot
