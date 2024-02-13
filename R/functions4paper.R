@@ -52,7 +52,7 @@ add_one_forecast <- function(f,cols) {
 #'
 #' @return 
 #' @export
-add_legend <- function(x,y,d,cols,txt,dt,cex) {
+add_legend <- function(x,y,d,cols,txt,dt,cex=2) {
 	txt <- format(round(txt,digits=2))
 	txt <- sapply(txt,function(tt){sub(' ','',tt)})
 	x <- x*10000
@@ -67,13 +67,13 @@ add_legend <- function(x,y,d,cols,txt,dt,cex) {
 		#  add text for each colour
 		if (i!=1) tt <- paste0('(',txt[i],', ',txt[i+1],']')
 		if (i==1) tt <- paste0('[',txt[i],', ',txt[i+1],']')
-		text(x-dt,mean(yy),tt,pos=2,cex=2)
+		text(x-dt,mean(yy),tt,pos=2,cex=cex)
 	}
 	ic <- ic + 1
 	yy <- c(y-d*ic,y-(ic-1)*d)
 	rect(xx[1],yy[1],xx[2],yy[2],col=1,border=1)
 	#  add text for each colour
-	text(x-dt,mean(yy),'Not included',pos=2,cex=2)
+	text(x-dt,mean(yy),'Not included',pos=2,cex=cex)
 	
 }
 
@@ -82,6 +82,6 @@ add_legend <- function(x,y,d,cols,txt,dt,cex) {
 #'
 #' @return 
 #' @export
-add_legend_main <- function(x,y,main) {
+add_legend_main <- function(x,y,main, cex=2.3) {
 	text(x*10000,y*10000,main,pos=2,cex=2.3)
 }
