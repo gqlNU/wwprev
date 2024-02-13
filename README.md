@@ -39,6 +39,8 @@ The script [inst/scripts/summarising.R](inst/scripts/summarising.R) assesses the
 
 - [inst/scripts/tau_map_onGitHub.R](inst/scripts/tau_map_onGitHub.R) produces the map of correlation between prevalence and wastewater viral concentration across the LTLAs in England. The LTLA and the regions boundaries are available within this package and were obtained via [https://geoportal.statistics.gov.uk/datasets/77c428630a664bf08301a0d07a2adbc9/] and [https://geoportal.statistics.gov.uk/datasets/35ec07df9b774e938dd5b5595f10dfcc/] respectively (last accessed 13/02/2024).
 
+- [inst/scripts/visualise_parameters_onGitHub.R](inst/scripts/visualise_parameters_onGitHub.R) visualises the parameter estimates as shown in Figure 3 in the supplementary material.
+
 - [inst/scripts/ww_only_data_integration.R](inst/scripts/ww_only_data_integration.R) compares the LTLA-weekly nowcast prevalence from two models, the data integration model that uses both the wastewater data and national-level prevalence and one that only uses the wastewater data.  
 
 
